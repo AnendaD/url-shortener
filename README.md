@@ -1,7 +1,5 @@
 # URL Shortener
 
-A lightweight, fast URL shortening service built with Go, featuring RESTful API endpoints, SQLite storage, and comprehensive testing.
-
 ## Features
 
 - **URL Shortening**: Convert long URLs into short, memorable aliases

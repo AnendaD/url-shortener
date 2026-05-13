@@ -6,11 +6,9 @@
 - **Custom Aliases**: Support for user-defined aliases or auto-generated random strings
 - **Fast Redirects**: Efficient URL lookup and redirection
 - **RESTful API**: Clean, well-structured HTTP endpoints
-- **Secure**: Basic authentication for URL creation
 - **Structured Logging**: Beautiful, leveled logging with slog
 - **SQLite Storage**: Lightweight, file-based database
 - **Comprehensive Testing**: Unit tests and integration tests included
-- **Environment-Aware**: Different configurations for local, dev, and prod environments
 
 ## Architecture
 
@@ -38,7 +36,7 @@ url-shortener/
 
 ## Prerequisites
 
-- Go 1.21 or higher
+- Go 1.21+
 - SQLite3
 
 ## Installation
@@ -176,87 +174,3 @@ go test ./internal/...
 ```bash
 go test ./tests/...
 ```
-
-### Test Coverage
-
-Generate coverage report:
-```bash
-go test -coverprofile=coverage.out ./...
-go tool cover -html=coverage.out
-```
-
-## Project Structure Details
-
-### Handlers
-
-- **save.go**: Handles URL creation with validation and alias generation
-- **redirect.go**: Handles URL lookups and HTTP redirects
-
-### Storage
-
-- **sqlite.go**: SQLite implementation with prepared statements
-- **storage.go**: Storage interface and error definitions
-
-### Middleware
-
-- **logger.go**: Request/response logging with duration tracking
-
-### Utilities
-
-- **random.go**: Generates random alphanumeric strings for aliases
-- **response.go**: Standardized API response structures
-- **sl.go**: Structured logging helpers
-
-### Logging
-
-The application supports three logging modes:
-
-- **local**: Pretty-printed colored output for development
-- **dev**: JSON output with debug level
-- **prod**: JSON output with info level
-
-## Dependencies
-
-Main dependencies:
-- `github.com/go-chi/chi/v5` - HTTP router
-- `github.com/go-chi/render` - JSON rendering
-- `github.com/mattn/go-sqlite3` - SQLite driver
-- `github.com/go-playground/validator/v10` - Request validation
-- `github.com/ilyakaznacheev/cleanenv` - Configuration management
-- `github.com/fatih/color` - Colored terminal output
-
-Testing dependencies:
-- `github.com/stretchr/testify` - Testing assertions and mocks
-- `github.com/gavv/httpexpect/v2` - HTTP API testing
-- `github.com/brianvoe/gofakeit/v6` - Fake data generation
-
-## Development
-
-### Adding New Handlers
-
-1. Create a new package under `internal/http-server/handlers/`
-2. Implement the handler function with signature: `func(log *slog.Logger, storage Storage) http.HandlerFunc`
-3. Register the route in `main.go`
-
-### Generating Mocks
-
-The project uses mockery for generating test mocks:
-
-```bash
-mockery --name=URLSaver --dir=internal/http-server/handlers/url/save --output=internal/http-server/handlers/url/save/mocks
-mockery --name=URLGetter --dir=internal/http-server/handlers/redirect --output=internal/http-server/handlers/redirect/mocks
-```
-
-## Performance Considerations
-
-- Database connections are prepared and reused
-- Indexes on alias column for fast lookups
-- Middleware for request timeout handling
-- Efficient random string generation
-
-## Security
-
-- Basic authentication for URL creation endpoints
-- SQL injection prevention via prepared statements
-- Request validation and sanitization
-- No authentication required for redirect (public access)

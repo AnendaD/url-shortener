@@ -4,7 +4,6 @@ import (
 	"log/slog"
 	"net/http"
 	resp "url-shortener/internal/lib/api/response"
-	"url-shortener/internal/lib/logger/sl"
 
 	"errors"
 	"url-shortener/internal/lib/random"
@@ -53,19 +52,19 @@ func New(log *slog.Logger, urlSaver URLSaver) http.HandlerFunc {
 			return
 		}
 		if err != nil {
-			log.Error("failed to decode request body", sl.Err(err))
+			log.Error("failed to decode request body", "error", err)
 
 			render.JSON(w, r, resp.Error("failed to decode request"))
 
 			return
 		}
 
-		log.Info("requst body decoded", slog.Any("requst", req))
+		log.Info("requst body decoded", slog.Any("request", req))
 
 		if err := validator.New().Struct(req); err != nil {
 			validateErr := err.(validator.ValidationErrors)
 
-			log.Error("invalid request", sl.Err(err))
+			log.Error("invalid request", "error", err)
 
 			render.JSON(w, r, resp.ValidationError(validateErr))
 
@@ -87,7 +86,7 @@ func New(log *slog.Logger, urlSaver URLSaver) http.HandlerFunc {
 		}
 
 		if err != nil {
-			log.Error("failed to add url", sl.Err(err))
+			log.Error("failed to add url", "error", err)
 
 			render.JSON(w, r, resp.Error("failed to add url"))
 

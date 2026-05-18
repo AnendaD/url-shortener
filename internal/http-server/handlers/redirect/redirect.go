@@ -5,7 +5,6 @@ import (
 	"log/slog"
 	"net/http"
 	resp "url-shortener/internal/lib/api/response"
-	"url-shortener/internal/lib/logger/sl"
 	"url-shortener/internal/storage"
 
 	"github.com/go-chi/chi/v5"
@@ -44,7 +43,7 @@ func New(log *slog.Logger, URLGetter urlGetter) http.HandlerFunc {
 		}
 
 		if err != nil {
-			log.Error("failed to get url", sl.Err(err))
+			log.Error("failed to get url", "error", err)
 
 			render.JSON(w, r, resp.Error("internal error"))
 

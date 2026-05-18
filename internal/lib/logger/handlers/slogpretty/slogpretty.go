@@ -29,7 +29,6 @@ func (opts PrettyHandlerOptions) NewPrettyHandler(
 		Handler: slog.NewJSONHandler(out, opts.SlogOpts),
 		l:       stdLog.New(out, "", 0),
 	}
-
 	return h
 }
 

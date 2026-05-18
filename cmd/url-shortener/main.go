@@ -7,7 +7,6 @@ import (
 	"url-shortener/internal/http-server/handlers/redirect"
 	"url-shortener/internal/http-server/handlers/url/save"
 	mwLogger "url-shortener/internal/http-server/middleware/logger"
-	"url-shortener/internal/lib/logger/sl"
 	"url-shortener/internal/storage/sqlite"
 
 	"net/http"
@@ -32,7 +31,7 @@ func main() {
 
 	storage, err := sqlite.New(cfg.StoragePath)
 	if err != nil {
-		log.Error("failed to init storage", sl.Err(err))
+		log.Error("failed to init storage", "error", err)
 		os.Exit(1)
 	}
 
